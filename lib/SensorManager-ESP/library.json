@@ -1,0 +1,39 @@
+{
+    "name": "SensorManager-ESP",
+    "keywords": "iot, sensor, esp8266",
+    "description": "Arduino library used to manage IOT Sensors",
+    "repository":
+    {
+    "type": "git",
+    "url": "https://github.com/milesburton/Arduino-Temperature-Control-Library.git"
+    },
+    "authors":
+    [
+    {
+        "name": "Martin S. Eskildsen",
+        "email": "martin@eskildsen.name",
+        "url": "",
+        "maintainer": true
+    }
+    ],
+    "dependencies":
+    [
+        {
+            "name": "ESP8266WiFi",
+            "version": ">=1.0"
+        },
+        {
+            "name": "ESP Async TCP",
+            "version": ">=1.2.2"
+        },
+        {
+            "name": "ESP Async WebServer",
+            "version": ">=1.2.3"
+        },
+        {
+            "name": "TaskScheduler",
+            "version": ">=3.0.2"
+        }
+    ]
+
+}
