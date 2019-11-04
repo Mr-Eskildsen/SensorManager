@@ -36,35 +36,4 @@ public:
 };
 
 
-/*
-class InfoTabDropItem : public InfoTabItem 
-{
-
-private:
-	//TODO:: MAKE DYNAMIC
-	static const int ITEMS = 10;
-
-	InfoTabItem* items[ITEMS] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-	int count = 0;
-public:
-	InfoTabDropItem(String id, String description, PageContentsCallback callback, void *object);
-	
-
-	void addDropItem(InfoTabItem* item) ;
-	
-	bool isDropItem() override {return true;}
-
-	int GetDropItemCount() {return count;}
-
-	InfoTabItem* GetDropItemAt(int idx) override
-	{
-		if ((idx<InfoTabDropItem::ITEMS) && idx>-1) 
-		{
-			return items[idx];
-		}
-		return NULL;
-	};
-
-};
-*/
 #endif // __InfoTabItem_h__

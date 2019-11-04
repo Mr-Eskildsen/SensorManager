@@ -17,7 +17,7 @@ InfoTabItem::InfoTabItem(String id, String description, PageContentsCallback cal
 InfoTabItem::InfoTabItem(SensorProxy* pSensor)
 {
 	//TODO:: Do Something INIT STUFF here
-	_id = pSensor->getId();
+	_id = pSensor->getSensorId();
 	_description = pSensor->getName();
 	contentBuildCallback = pSensor->getCallback();
 	_object = pSensor;

@@ -4,8 +4,8 @@
 #include <functional>
 #include "FS.h"
 
-#define _TASK_STD_FUNCTION
-#include <TaskScheduler.h>
+//#define _TASK_STD_FUNCTION
+//#include <TaskScheduler.h>
 
 #include <Sensor\BinarySensor.h>
 #include <Web\InfoWebServer.h>
@@ -35,12 +35,10 @@ InfoWebServer::InfoWebServer(uint16_t port)
 
 	pConfigSensorsTab = NULL;
 
-	pRunner  = NULL;
-	//TODO:: FIXC
-	//pConfigSensorsTab = new InfoTabDropItem("sensors-config", "Configuration", NULL, NULL);
+//	pRunner  = NULL;
 	
 	tabItemCount = 0;
-	lastUpdate = 0;
+//	lastUpdate = 0;
 
 		for (int idx=0; idx<MAX_TAB_ITEMS; idx++)
 			arrTabItems[idx] = NULL;
@@ -50,10 +48,11 @@ InfoWebServer::InfoWebServer(uint16_t port)
 
 InfoWebServer::~InfoWebServer() 
 {
+/*
 	if (pRunner) {
 		delete pRunner;
 	}
-}
+*/}
 
 
 
@@ -90,7 +89,7 @@ void InfoWebServer::setup()
 	pWS = new AsyncWebSocket("/ws");
 	pWS->onEvent(std::bind(&InfoWebServer::onWsEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6));
 
-
+/*
 	pRunner = new Scheduler();
 	
 	pRunner->init();
@@ -98,7 +97,7 @@ void InfoWebServer::setup()
 	std::function<void()> onTimerCallback = std::bind(&InfoWebServer::onTimer, this);
 	pTask =  new Task(100, TASK_FOREVER, onTimerCallback);
 	pRunner->addTask(*pTask);
-
+*/
 	addHandler(pWS);
 
 
@@ -141,13 +140,13 @@ void InfoWebServer::setup()
     	Serial.println("[InfoWebServer] An Error has occurred while mounting SPIFFS");
      	return;
   	}	
-
+/*
 	if (pRunner) {
 		Serial.println("[InfoWebServer] Enable all tasks");
 		pRunner->enableAll();
 	}
 
-
+*/
 	Serial.println("[InfoWebServer] 'setup' done");
 
 }
@@ -156,12 +155,15 @@ void InfoWebServer::setup()
 
 void InfoWebServer::loadConfig()
 {
-
-	//TODO:: Dummy Load
+	
+	
+	//TODO:: Dummy Load -> Load from SensorManager
 	BinarySensor *pSensor1Config = new BinarySensor("pir1", "PIR Sensor 1", D5);
 	BinarySensor *pSensor2Config = new BinarySensor("pir2", "PIR Sensor 2", D6);
 	addSensor(new InfoTabItem(pSensor1Config));
 	addSensor(new InfoTabItem(pSensor2Config));
+
+
 //    server.addSensor(new InfoTabItem("pir", "PIR Sensor", sensorPir, NULL));
 //    server.addSensor(new InfoTabItem("bme280", "BME280", sensorBME280, NULL));
 	//delete pSensor1Config;
@@ -176,24 +178,40 @@ void InfoWebServer::loadConfig()
 
 
 void InfoWebServer::loop() {
-	
+/*	
 	if (pRunner) {
 		pRunner->execute();
 	}
+*/
 }
 
+void InfoWebServer::onSensorEvent(SensorEvent *pSE )
+{
+		String text = pSE->getSensorId() + String(".") + pSE->getChannelId() + String (" -> ") + pSE->getValue();
+		
+		for(int idx=0; idx<mapConnections->size();idx++) {
+			AsyncWebSocketClient* conn = mapConnections->getData(idx);
+			if (conn != NULL && conn->status() == WS_CONNECTED){
+				
+				conn->text(text);
+			}
+		}
+
+}
 
 void InfoWebServer::onTimer()
 {
+/*	
 	unsigned long curMillis = millis();
 	//if(((lastUpdate+1000)<curMillis) && globalClient != NULL && globalClient->status() == WS_CONNECTED){
       String randomNumber = String(random(0,20));
       //globalClient->text(randomNumber);
 	if( lastUpdate+5000<curMillis ){
-		Serial.println("Updating from timer callback");
+		//Serial.println("Updating from timer callback");
 		for(int idx=0; idx<mapConnections->size();idx++) {
 			AsyncWebSocketClient* conn = mapConnections->getData(idx);
 			if (conn != NULL && conn->status() == WS_CONNECTED){
+				//TODO:: Fix this
 				int val = digitalRead(D5);
 				if (val==0) {
 					conn->text(String("Untriggered"));
@@ -207,9 +225,8 @@ void InfoWebServer::onTimer()
 
 		lastUpdate = curMillis;
    }
-
+*/
 }
-
 
 void InfoWebServer::onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
  

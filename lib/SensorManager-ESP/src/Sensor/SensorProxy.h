@@ -1,6 +1,6 @@
 
-#ifndef __SensorProxy_h__
-#define __SensorProxy_h__
+#ifndef __SENSORPROXY_H__
+#define __SENSORPROXY_H__
 
 #include <Arduino.h>
 
@@ -8,17 +8,37 @@
 
 class SensorProxy
 {
-    String id;
-    String name;
+    String _id;
+    String _name;
+
+    unsigned long lastRead;
+protected:
+    SensorEventCallback callback;
 public:
-    SensorProxy(String _id, String _name);
+    SensorProxy(String id, String name);
     virtual ~SensorProxy() = 0;
 
-    String getId() {return id;}
-    String getName() {return name;}
+    String getSensorId() {return _id;}
+    virtual uint32_t getUniqueId() = 0;
+    
+    String getName() {return _name;}
+    
+    void registerEventCallback(SensorEventCallback _callback);
+
+
+    virtual bool useInterrupt() {return false;};
+    virtual int getInterruptId() {return -1;};
+    
+    virtual void onInterrupt(uint8_t intrId) = 0;
 
     virtual PageContentsCallback getCallback() = 0;
 
+    bool read(unsigned long curTime = 0, bool force = false);
+    virtual String getValue(int channelId = 0) = 0;    
+    
+protected:
+    virtual bool onRead(bool force) = 0;    
+    virtual uint32_t getReadInterval() = 0;
 };
 
-#endif //__SensorProxy_h__
+#endif //__SENSORPROXY_H__

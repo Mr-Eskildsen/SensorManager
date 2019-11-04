@@ -93,14 +93,16 @@ const uint8_t favicon_ico_gz[] PROGMEM = {
  0x16, 0x4A, 0x7E, 0x04, 0x00, 0x00
 };
 
+/*
 class Task;
 class Scheduler;
-
+*/
 class InfoWebServer : public AsyncWebServer {
 private:
 	AsyncWebSocket *pWS;
-	unsigned long lastUpdate;
-	Scheduler *pRunner;
+//	unsigned long lastUpdate;
+//	Scheduler *pRunner;
+
 public:
 	/**
 		------ ------ ------ ------ ------ ------ VARIABLES ------ ------ ------ ------ ------ ------
@@ -119,9 +121,11 @@ public:
 
 	void loop();
 
-protected:
-	Task *pTask;
+	void onSensorEvent(SensorEvent *pSE );
 
+protected:
+/*	Task *pTask;
+*/
 	void onTimer();
 
 	void loadConfig();
